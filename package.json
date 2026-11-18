@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "coverage": "c8 npm test",
+    "lint": "eslint ./ --fix"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,16 @@
     "url": "https://github.com/h1kew/qa-automation-tasks/issues"
   },
   "homepage": "https://github.com/h1kew/qa-automation-tasks#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "c8": "^12.0.0",
+    "chai": "^4.5.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.14.0",
+    "mocha": "^12.0.3",
+    "mochawesome": "^8.1.1"
+  }
 }
