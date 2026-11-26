@@ -111,7 +111,7 @@ exports.config = {
   // replayable trace of every test. Install @wdio/devtools-service, then add
   // 'devtools' to `services` above.
   // https://webdriver.io/docs/devtools/wdio
-  services: ['geckodriver'],
+  services: [],
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
