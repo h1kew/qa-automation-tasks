@@ -1,4 +1,5 @@
 const { existsSync, mkdirSync } = require('fs')
+
 exports.config = {
   //
   // ====================
@@ -6,6 +7,8 @@ exports.config = {
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: 'local',
+  specFileRetries: 1,
+  specFileRetriesDelay: 5,
   //
   // ==================
   // Specify Test Files
@@ -42,7 +45,7 @@ exports.config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 2,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -51,9 +54,14 @@ exports.config = {
   capabilities: [
     {
       browserName: 'firefox',
+      pageLoadStrategy: 'eager',
     },
     {
       browserName: 'chrome',
+      pageLoadStrategy: 'eager',
+      'goog:chromeOptions': {
+        args: ['--disable-dev-shm-usage'],
+      },
     },
   ],
 
@@ -88,7 +96,7 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'https://www.epam.com',
+  baseUrl: 'https://automationexercise.com',
 
   //
   // Default timeout for all waitFor* commands.
@@ -260,8 +268,8 @@ exports.config = {
   afterTest: async (test, context, result) => {
     // take a screenshot anytime a test fails and throws an error
     if (result.error) {
-      console.log(`Screenshot for the failed test ${test.title} is saved`)
-      const filename = test.title + '.png'
+      const safeTitle = test.title.replace(/[\\/:*?"<>|]/g, '_')
+      const filename = `${safeTitle}.png`
       const dirPath = './artifacts/screenshots/'
 
       if (!existsSync(dirPath)) {
@@ -269,7 +277,10 @@ exports.config = {
           recursive: true,
         })
       }
-      await browser.saveScreenshot(dirPath + filename)
+      await browser.saveScreenshot(`${dirPath}${filename}`)
+      console.log(
+        `Screenshot for the failed test "${test.title}" is saved as ${filename}`,
+      )
     }
   },
 
